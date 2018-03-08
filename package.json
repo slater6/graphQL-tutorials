@@ -1,0 +1,25 @@
+{
+  "name": "graphql-tutorials",
+  "version": "1.0.0",
+  "description": "graphQL-tutorials",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/slater6/graphQL-tutorials.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/slater6/graphQL-tutorials/issues"
+  },
+  "homepage": "https://github.com/slater6/graphQL-tutorials#readme",
+  "dependencies": {
+    "express": "^4.16.2",
+    "express-graphql": "^0.6.12",
+    "graphql": "^0.13.1",
+    "lodash": "^4.17.5"
+  }
+}
