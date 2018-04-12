@@ -2,26 +2,42 @@ const graphql = require('graphql');
 
 const axios = require('axios');
 
-const { GraphQLObjectType, GraphQLString, GraphQLInt, GraphQLSchema } = graphql;
+const {
+  GraphQLObjectType,
+  GraphQLString,
+  GraphQLList,
+  GraphQLInt,
+  GraphQLSchema
+} = graphql;
 
 const CompanyType = new GraphQLObjectType({
   name: 'Company',
-  fields: {
+  fields: () => ({
     id: { type: GraphQLString },
     name: { type: GraphQLString },
-    description: { type: GraphQLString }
-  }
+    description: { type: GraphQLString },
+    users: {
+      type: new GraphQLList(UserType),
+      resolve(parentValue) {
+        return axios
+          .get(`http://localhost:5000/companies/${parentValue.id}/users`)
+          .then(result => {
+            return result.data;
+          });
+      }
+    }
+  })
 });
 
 const UserType = new GraphQLObjectType({
   name: 'User',
-  fields: {
+  fields: () => ({
     id: { type: GraphQLString },
     firstName: { type: GraphQLString },
     age: { type: GraphQLInt },
     company: {
       type: CompanyType,
-      resolve(parentValue, args) {
+      resolve(parentValue) {
         return axios
           .get(`http://localhost:5000/companies/${parentValue.companyId}`)
           .then(result => {
@@ -29,7 +45,7 @@ const UserType = new GraphQLObjectType({
           });
       }
     }
-  }
+  })
 });
 
 const RootQuery = new GraphQLObjectType({
