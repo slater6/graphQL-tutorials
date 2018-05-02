@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import { Link } from 'react-router';
 import { fetchSongs, deleteSong } from '../queries';
@@ -22,16 +21,11 @@ class SongList extends Component {
   }
 
   handleDelete(id) {
-    this.props.mutate({
-      variables: {
-        id
-      },
-      refetchQueries: [
-        {
-          query: fetchSongs
-        }
-      ]
-    });
+    this.props
+      .mutate({
+        variables: { id }
+      })
+      .then(() => this.props.data.refetch());
   }
 
   render() {
