@@ -1,12 +1,40 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router';
 import { graphql } from 'react-apollo';
 import { fetchSong } from '../queries';
+import LyricCreate from './LyricCreate';
 
 class SongDetail extends Component {
+  renderLyrics() {
+    return this.props.data.song.lyrics.map(({ id, content, likes }) => {
+      return (
+        <li className="collection-item" key={`lyric-${id}`}>
+          {content}
+          <i
+            className="material-icons right"
+            onClick={() => this.handleDelete(id)}
+          >
+            delete
+          </i>
+        </li>
+      );
+    });
+  }
   render() {
-    console.log(this.props);
-    const { title } = this.props.data.song;
-    return <h3>Song Detail : {title}</h3>;
+    const { song } = this.props.data;
+    console.log(song);
+    if (!song) {
+      return <div>Loading...</div>;
+    }
+
+    return (
+      <div>
+        <Link to="/">BACK</Link>
+        <h3>Song Detail : {song.title}</h3>
+        <ul className="collection">{this.renderLyrics()}</ul>
+        <LyricCreate songId={song.id} />
+      </div>
+    );
   }
 }
 
