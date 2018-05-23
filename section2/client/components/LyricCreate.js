@@ -16,18 +16,12 @@ class LyricCreate extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    console.log(this.state.content);
     this.props
       .mutate({
         variables: {
           songId: this.state.songId,
           content: this.state.content
-        },
-        refetchQueries: [
-          {
-            query: fetchSong
-          }
-        ]
+        }
       })
       .then(() => {
         this.setState({
