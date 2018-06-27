@@ -5,9 +5,17 @@ import { fetchSong, likeLyric } from '../queries';
 import LyricCreate from './LyricCreate';
 
 class SongDetail extends Component {
-  onLike(id) {
+  onLike(id, likes) {
     this.props.mutate({
-      variables: { id }
+      variables: { id },
+      optimisticResponse: {
+        __typename: 'Mutation',
+        likeLyric: {
+          id: id,
+          __typename: 'LyricType',
+          likes: likes + 1
+        }
+      }
     });
   }
   renderLyrics() {
@@ -15,7 +23,7 @@ class SongDetail extends Component {
       return (
         <li className="collection-item" key={`lyric-${id}`}>
           {content}
-          <i className="material-icons right" onClick={() => this.onLike(id)}>
+          <i className="material-icons right" onClick={() => this.onLike(id, likes)}>
             thumb_up
           </i>
           {likes}
